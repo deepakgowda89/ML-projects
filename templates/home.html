@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Exam Performance Prediction</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 750px;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #5568d9;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 18px;
+            background: #f1f5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Exam Performance Prediction</h1>
+
+    <p class="subtitle">
+        Enter the student's details to predict exam performance
+    </p>
+
+    <form action="{{ url_for('predict_datapoint') }}" method="post">
+
+        <!-- Gender -->
+        <div class="form-group">
+            <label for="gender">Gender</label>
+
+            <select name="gender" id="gender" required>
+                <option value="" disabled selected>
+                    Select your Gender
+                </option>
+
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+
+
+        <!-- Race / Ethnicity -->
+        <div class="form-group">
+            <label for="race_ethnicity">
+                Race or Ethnicity
+            </label>
+
+            <select name="race_ethnicity" id="race_ethnicity" required>
+                <option value="" disabled selected>
+                    Select Ethnicity
+                </option>
+
+                <option value="group A">Group A</option>
+                <option value="group B">Group B</option>
+                <option value="group C">Group C</option>
+                <option value="group D">Group D</option>
+                <option value="group E">Group E</option>
+            </select>
+        </div>
+
+
+        <!-- Parental Education -->
+        <div class="form-group">
+            <label for="parental_level_of_education">
+                Parental Level of Education
+            </label>
+
+            <select
+                name="parental_level_of_education"
+                id="parental_level_of_education"
+                required>
+
+                <option value="" disabled selected>
+                    Select Parent Education
+                </option>
+
+                <option value="associate's degree">
+                    associate's degree
+                </option>
+
+                <option value="bachelor's degree">
+                    bachelor's degree
+                </option>
+
+                <option value="high school">
+                    high school
+                </option>
+
+                <option value="master's degree">
+                    master's degree
+                </option>
+
+                <option value="some college">
+                    some college
+                </option>
+
+                <option value="some high school">
+                    some high school
+                </option>
+
+            </select>
+        </div>
+
+
+        <!-- Lunch -->
+        <div class="form-group">
+            <label for="lunch">
+                Lunch Type
+            </label>
+
+            <select name="lunch" id="lunch" required>
+
+                <option value="" disabled selected>
+                    Select Lunch Type
+                </option>
+
+                <option value="free/reduced">
+                    free/reduced
+                </option>
+
+                <option value="standard">
+                    standard
+                </option>
+
+            </select>
+        </div>
+
+
+        <!-- Test Preparation -->
+        <div class="form-group">
+            <label for="test_preparation_course">
+                Test Preparation Course
+            </label>
+
+            <select
+                name="test_preparation_course"
+                id="test_preparation_course"
+                required>
+
+                <option value="" disabled selected>
+                    Select Test Course
+                </option>
+
+                <option value="none">None</option>
+                <option value="completed">Completed</option>
+
+            </select>
+        </div>
+
+
+        <!-- Scores -->
+        <div class="row">
+
+            <div class="form-group">
+                <label for="reading_score">
+                    Reading Score (out of 100)
+                </label>
+
+                <input
+                    type="number"
+                    name="reading_score"
+                    id="reading_score"
+                    min="0"
+                    max="100"
+                    placeholder="Enter reading score"
+                    required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="writing_score">
+                    Writing Score (out of 100)
+                </label>
+
+                <input
+                    type="number"
+                    name="writing_score"
+                    id="writing_score"
+                    min="0"
+                    max="100"
+                    placeholder="Enter writing score"
+                    required>
+            </div>
+
+        </div>
+
+
+        <button type="submit">
+            Predict Math Score
+        </button>
+
+    </form>
+
+
+    {% if results %}
+    <div class="result">
+        The prediction is {{ results }}
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
