@@ -4,7 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
-artifacts
+
 
 # Virtual environment
 venv/
